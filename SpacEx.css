@@ -1,0 +1,111 @@
+/**
+ * @author Sarvesh Kulkarni <sarveshsk43@gmail.com>
+ */
+
+body {
+    background-color: #eeeeee;
+}
+
+#header {
+    font-size: x-large;
+    font-weight: bold;
+    background-color: #176AB0;
+    color: white;
+    text-align: center;
+    padding: 5px;
+}
+
+#left-section {
+    line-height: 30px;
+    background-color: white;
+    height: 525px;
+    width: 170px;
+    float: left;
+    padding: 5px;
+    margin-top: 10px;
+}
+
+#right-section {
+    line-height: 30px;
+    background-color: #eeeeee;
+    height: auto;
+    width: 1300px;
+    float: right;
+    padding: 5px;
+    margin-top: 10px;
+}
+
+.filter-heading {
+    border-bottom: 1px solid #000;
+}
+
+.button-group {
+    padding: 5px;
+    text-align: center;
+}
+
+.btn-light {
+    background-color: #bdefbd;
+    /* Green */
+    color: black;
+    text-align: center;
+}
+
+.btn-dark {
+    background-color: #08ee08;
+    /* Green */
+    color: black;
+    text-align: center;
+}
+
+.divider {
+    margin-right: 25px;
+}
+
+#last-button {
+    text-align: left;
+    margin-left: 10px;
+}
+
+.launch-detail-card {
+    height: 300px;
+    width: 220px;
+    background-color: white;
+    float: left;
+    margin-left: 70px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.launch-detail-card-img {
+    height: 180px;
+    width: 160px;
+    background-color: #eeeeee;
+    margin-top: 15px;
+}
+
+.fotter {
+    height: 15px;
+}
+
+.satelite-title {
+    color: rgb(10, 89, 163);
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.satelite-title:hover {
+    overflow: visible;
+    height: auto;
+}
+
+.strong-text {
+    font-weight: 600;
+    line-height: 15px;
+}
+
+.value-color {
+    color: rgb(103, 101, 219);
+}
