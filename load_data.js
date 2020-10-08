@@ -2,8 +2,7 @@
  * @author Sarvesh Kulkarni <sarveshsk43@gmail.com>
  */
 
-var serverData, global_search = { 'year': [], 'launch': [], 'landing': [] },
-    all_years = ['2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020'],
+var serverData, global_search = { 'year': '', 'launch': '', 'landing': '' },
     URLSearchParams = new URLSearchParams("?foo=1&bar=2");
 var stateObj = {};
 console.log(URLSearchParams.toString());
@@ -33,12 +32,28 @@ function renderResults(launchData) {
         let launch_year = launchData[i].launch_year;
         let launch_success = launchData[i].launch_success;
 
-        mission_card += `<div class = "launch-detail-card"><img src=${mission_patch} class = "launch-detail-card-img"/>
+        // mission_card += `<div class = "launch-detail-card"><img src=${mission_patch} class = "launch-detail-card-img"/>
+        // <div class="satelite-title"> ${mission_name} #${flight_number}</div>
+        // <div class="strong-text">Mission Ids: <small class="value-color"> ${mission_ids} </small></div>
+        // <div class="strong-text">Launch Year: <small class="value-color"> ${launch_year} </small></div>
+        // <div class="strong-text"> Successfull Launch : <small class="value-color"> ${launch_success}</small></div>
+        // <div class="strong-text"> Successfull Landing : <small class="value-color"> ${launch_success}</small></div>
+        // </div>`;
+
+        mission_card += `<li class="cards_item">
+        <div class="card">
+        <div class = "launch-detail-card">
+        <img src=${mission_patch} class = "launch-detail-card-img"/>
+        </div>
         <div class="satelite-title"> ${mission_name} #${flight_number}</div>
+        <div>&nbsp;</div>
         <div class="strong-text">Mission Ids: <small class="value-color"> ${mission_ids} </small></div>
         <div class="strong-text">Launch Year: <small class="value-color"> ${launch_year} </small></div>
         <div class="strong-text"> Successfull Launch : <small class="value-color"> ${launch_success}</small></div>
         <div class="strong-text"> Successfull Landing : <small class="value-color"> ${launch_success}</small></div>
+        </div>
+        </li>
+        
         </div>`;
     }
     document.getElementById("right-section").innerHTML = mission_card;
@@ -57,11 +72,22 @@ function getSearchParams() {
     let attribute_type = this.getAttribute("search-type");
     if (attribute_type == "year") {
         attribute_year = this.classList.toggle('btn-dark') ? this.getAttribute("value") : removeFromSearch('year', this.getAttribute("value"));
-        (attribute_year) ? global_search['year'].push(attribute_year): '';
+        document.querySelectorAll('.btn-year').forEach(button => {
+            if (button.value !== this.getAttribute("value")) {
+                button.classList.remove('btn-dark');
+            }
+        });
+        (attribute_year) ? global_search['year'] = attribute_year: global_search['year'] = '';
         URLSearchParams.append('year', attribute_year);
     } else if (attribute_type == "launch") {
         attribute_launch = this.classList.toggle('btn-dark') ? this.getAttribute("value") : removeFromSearch('launch', this.getAttribute("value"));
         (attribute_launch) ? global_search['launch'] = attribute_launch: null;
+
+        document.querySelectorAll('.btn-launch').forEach(button => {
+            if (button.value !== this.getAttribute("value")) {
+                button.classList.remove('btn-dark');
+            }
+        });
         URLSearchParams.append('launch', attribute_launch);
     } else if (attribute_type == "landing") {
         attribute_landing = this.classList.toggle('btn-dark') ? this.getAttribute("value") : removeFromSearch('landing', this.getAttribute("value"));
@@ -73,19 +99,13 @@ function getSearchParams() {
 };
 
 function removeFromSearch(key, value) {
-    if (key == 'year') {
-        let filtered_array = global_search[key].filter(function(e) { return e != value });
-        global_search[key] = filtered_array;
-    } else {
-        global_search[key] = '';
-    }
     URLSearchParams.delete(key);
     filterResults();
 }
 
 function filterResults() {
 
-    launch_year = global_search['year'].length == 0 ? all_years : global_search['year'];
+    launch_year = global_search['year'];
     launch_success = global_search['launch'];
     landing_success = global_search['landing'];
     (launch_success == 'true') ? launch_success_t = true: launch_success_t = '';
@@ -94,12 +114,24 @@ function filterResults() {
     (landing_success == 'false') ? landing_success_f = false: landing_success_f = '';
 
     console.log(launch_success_t, launch_success_f);
+    if (global_search['year'] != '' && global_search['launch'] != '' && global_search['landing'] != '') {
+        renderResults(serverData.filter(
+            function(entry) {
+                return launch_year == (entry.launch_year).toString() && launch_success == entry.launch_success && landing_success == entry.rocket.first_stage.cores.length > 0;
+            }))
 
-    renderResults(serverData.filter(
-        function(entry) {
-            return launch_year.includes((entry.launch_year).toString()) && (entry.launch_success == launch_success_t);
-        }
-    ))
+    } else if (global_search['year'] != '') {
+        renderResults(serverData.filter(
+            function(entry) {
+                return launch_year == (entry.launch_year).toString() || launch_success == entry.launch_success;
+            }))
+
+    } else {
+        renderResults(serverData);
+
+    }
+
+
 
 }
 

@@ -14,52 +14,47 @@
 
 <body onload="loadSpacExData()">
     <header id="header">SpacEx Launch Programs</header>
-    <aside>
-        <div id="left-section">
-            <strong>Filters</strong>
-            <div class="filter-heading">Launch Year</div>
-            <div class="button-group">
-                <span class="divider"><input type="button" value="2006" class="btn-light" search-type="year"></span> <span><input type="button" value="2007" class="btn-light" search-type="year"/></span>
-            </div>
-            <div class="button-group">
-                <span class="divider"><input type="button" value="2008" class="btn-light" search-type="year"></span> <span><input type="button" value="2009" class="btn-light" search-type="year"/></span>
-            </div>
-            <div class="button-group">
-                <span class="divider"><input type="button" value="2010" class="btn-light" search-type="year"></span> <span><input type="button" value="2011" class="btn-light" search-type="year"/></span>
-            </div>
-            <div class="button-group">
-                <span class="divider"><input type="button" value="2012" class="btn-light" search-type="year"></span> <span><input type="button" value="2013" class="btn-light" search-type="year"/></span>
-            </div>
-            <div class="button-group">
-                <span class="divider"><input type="button" value="2014" class="btn-light" search-type="year"></span> <span><input type="button" value="2015" class="btn-light" search-type="year"/></span>
-            </div>
-            <div class="button-group">
-                <span class="divider"><input type="button" value="2016" class="btn-light" search-type="year"></span> <span><input type="button" value="2017" class="btn-light" search-type="year"/></span>
-            </div>
-            <div class="button-group">
-                <span class="divider"><input type="button" value="2018" class="btn-light" search-type="year"></span> <span><input type="button" value="2019" class="btn-light" search-type="year"/></span>
-            </div>
-            <div class="button-group" id="last-button">
-                <span><input type="button" value="2020" class="btn-light" search-type="year"></span></span>
-            </div>
-
-            <div class="filter-heading"> Sucessful Launch</div>
-            <div class="button-group">
-                <span class="divider"><input type="button" value=true class="btn-light" search-type="launch"></span> <span><input type="button" value="false" class="btn-light" search-type="launch"/></span>
-            </div>
-
-            <div class="filter-heading"> Sucessful Landing</div>
-            <div class="button-group">
-                <span class="divider"><input type="button" value="true" class="btn-light" search-type="landing"></span> <span><input type="button" value="false" class="btn-light" search-type="landing"/></span>
-            </div>
+    <div id="left-section">
+        <strong>Filters</strong>
+        <div class="filter-heading">Launch Year</div>
+        <div class="button-group">
+            <span class="divider"><input type="button" value="2006" class="btn-light btn-year" search-type="year"></span> <span><input type="button" value="2007" class="btn-light btn-year" search-type="year"/></span>
         </div>
-    </aside>
-
-    <section>
-        <div id="right-section">
+        <div class="button-group">
+            <span class="divider"><input type="button" value="2008" class="btn-light btn-year" search-type="year"></span> <span><input type="button" value="2009" class="btn-light btn-year" search-type="year"/></span>
+        </div>
+        <div class="button-group">
+            <span class="divider"><input type="button" value="2010" class="btn-light btn-year" search-type="year"></span> <span><input type="button" value="2011" class="btn-light btn-year" search-type="year"/></span>
+        </div>
+        <div class="button-group">
+            <span class="divider"><input type="button" value="2012" class="btn-light btn-year" search-type="year"></span> <span><input type="button" value="2013" class="btn-light btn-year" search-type="year"/></span>
+        </div>
+        <div class="button-group">
+            <span class="divider"><input type="button" value="2014" class="btn-light btn-year" search-type="year"></span> <span><input type="button" value="2015" class="btn-light btn-year" search-type="year"/></span>
+        </div>
+        <div class="button-group">
+            <span class="divider"><input type="button" value="2016" class="btn-light btn-year" search-type="year"></span> <span><input type="button" value="2017" class="btn-light btn-year" search-type="year"/></span>
+        </div>
+        <div class="button-group">
+            <span class="divider"><input type="button" value="2018" class="btn-light btn-year" search-type="year"></span> <span><input type="button" value="2019" class="btn-light btn-year" search-type="year"/></span>
+        </div>
+        <div class="button-group" id="last-button">
+            <span><input type="button" value="2020" class="btn-light btn-year" search-type="year"></span></span>
         </div>
 
-    </section>
+        <div class="filter-heading"> Sucessful Launch</div>
+        <div class="button-group">
+            <span class="divider"><input type="button" value=true class="btn-light btn-launch" search-type="launch"></span> <span><input type="button" value="false" class="btn-light btn-launch" search-type="launch"/></span>
+        </div>
+
+        <div class="filter-heading"> Sucessful Landing</div>
+        <div class="button-group">
+            <span class="divider"><input type="button" value="true" class="btn-light" search-type="landing"></span> <span><input type="button" value="false" class="btn-light" search-type="landing"/></span>
+        </div>
+    </div>
+    <div class="main">
+        <ul class="cards" id="right-section"> </ul>
+    </div>
 
 </body>
 
