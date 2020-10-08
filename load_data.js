@@ -5,7 +5,6 @@
 var serverData, global_search = { 'year': '', 'launch': '', 'landing': '' },
     URLSearchParams = new URLSearchParams("?foo=1&bar=2");
 var stateObj = {};
-console.log(URLSearchParams.toString());
 
 function loadSpacExData() {
     bindClickEvents();
@@ -14,7 +13,7 @@ function loadSpacExData() {
         if (this.readyState == 4 && this.status == 200) {
             serverData = JSON.parse(this.responseText);
             renderResults(serverData);
-            readStoredURLParams();
+            //readStoredURLParams();
         }
     };
     xhttp.open("GET", "https://api.spacexdata.com/v3/launches?limit=100&amp;", true);
@@ -22,7 +21,6 @@ function loadSpacExData() {
 }
 
 function renderResults(launchData) {
-    console.log(launchData);
     var mission_card = '';
     for (let i = 0; i < launchData.length; i++) {
         let mission_patch = launchData[i].links.mission_patch;
@@ -31,14 +29,7 @@ function renderResults(launchData) {
         let mission_ids = launchData[i].mission_id.length > 0 ? launchData[i].mission_id.toString() : '';
         let launch_year = launchData[i].launch_year;
         let launch_success = launchData[i].launch_success;
-
-        // mission_card += `<div class = "launch-detail-card"><img src=${mission_patch} class = "launch-detail-card-img"/>
-        // <div class="satelite-title"> ${mission_name} #${flight_number}</div>
-        // <div class="strong-text">Mission Ids: <small class="value-color"> ${mission_ids} </small></div>
-        // <div class="strong-text">Launch Year: <small class="value-color"> ${launch_year} </small></div>
-        // <div class="strong-text"> Successfull Launch : <small class="value-color"> ${launch_success}</small></div>
-        // <div class="strong-text"> Successfull Landing : <small class="value-color"> ${launch_success}</small></div>
-        // </div>`;
+        let landing_success = launchData[i].rocket.first_stage.cores[0].land_success;
 
         mission_card += `<li class="cards_item">
         <div class="card">
@@ -50,7 +41,7 @@ function renderResults(launchData) {
         <div class="strong-text">Mission Ids: <small class="value-color"> ${mission_ids} </small></div>
         <div class="strong-text">Launch Year: <small class="value-color"> ${launch_year} </small></div>
         <div class="strong-text"> Successfull Launch : <small class="value-color"> ${launch_success}</small></div>
-        <div class="strong-text"> Successfull Landing : <small class="value-color"> ${launch_success}</small></div>
+        <div class="strong-text"> Successfull Landing : <small class="value-color"> ${landing_success}</small></div>
         </div>
         </li>
         
@@ -81,7 +72,7 @@ function getSearchParams() {
         URLSearchParams.append('year', attribute_year);
     } else if (attribute_type == "launch") {
         attribute_launch = this.classList.toggle('btn-dark') ? this.getAttribute("value") : removeFromSearch('launch', this.getAttribute("value"));
-        (attribute_launch) ? global_search['launch'] = attribute_launch: null;
+        (attribute_launch) ? global_search['launch'] = attribute_launch: global_search['launch'] = '';
 
         document.querySelectorAll('.btn-launch').forEach(button => {
             if (button.value !== this.getAttribute("value")) {
@@ -91,7 +82,12 @@ function getSearchParams() {
         URLSearchParams.append('launch', attribute_launch);
     } else if (attribute_type == "landing") {
         attribute_landing = this.classList.toggle('btn-dark') ? this.getAttribute("value") : removeFromSearch('landing', this.getAttribute("value"));
-        (attribute_landing) ? global_search['landing'] = attribute_landing: null;
+        (attribute_landing) ? global_search['landing'] = attribute_landing: global_search['landing'] = '';
+        document.querySelectorAll('.btn-landing').forEach(button => {
+            if (button.value !== this.getAttribute("value")) {
+                button.classList.remove('btn-dark');
+            }
+        });
         URLSearchParams.append('launch', attribute_landing);
     }
 
@@ -100,39 +96,61 @@ function getSearchParams() {
 
 function removeFromSearch(key, value) {
     URLSearchParams.delete(key);
-    filterResults();
+    // filterResults();
 }
 
 function filterResults() {
 
     launch_year = global_search['year'];
     launch_success = global_search['launch'];
-    landing_success = global_search['landing'];
-    (launch_success == 'true') ? launch_success_t = true: launch_success_t = '';
-    (landing_success == 'true') ? landing_success_t = true: landing_success_t = '';
-    (launch_success == 'false') ? launch_success_f = false: launch_success_f = '';
-    (landing_success == 'false') ? landing_success_f = false: landing_success_f = '';
+    landing_success = global_search['landing'] == "false" ? null : true;
 
-    console.log(launch_success_t, launch_success_f);
     if (global_search['year'] != '' && global_search['launch'] != '' && global_search['landing'] != '') {
         renderResults(serverData.filter(
             function(entry) {
-                return launch_year == (entry.launch_year).toString() && launch_success == entry.launch_success && landing_success == entry.rocket.first_stage.cores.length > 0;
+                return launch_year == (entry.launch_year).toString() && launch_success == entry.launch_success.toString() && landing_success == entry.rocket.first_stage.cores[0].land_success;
+            }))
+
+    } else if (global_search['launch'] != '' && global_search['landing'] != '') {
+        renderResults(serverData.filter(
+            function(entry) {
+                return launch_success == entry.launch_success.toString() && landing_success == entry.rocket.first_stage.cores[0].land_success;
+            }))
+
+    } else if (global_search['launch'] != '' && global_search['year'] != '') {
+        renderResults(serverData.filter(
+            function(entry) {
+                return launch_year == (entry.launch_year).toString() && launch_success == entry.launch_success.toString();
+            }))
+
+    } else if (global_search['landing'] != '' && global_search['year'] != '') {
+        renderResults(serverData.filter(
+            function(entry) {
+                return launch_year == (entry.launch_year).toString() && landing_success == entry.rocket.first_stage.cores[0].land_success;
+            }))
+
+    } else if (global_search['launch'] != '') {
+        renderResults(serverData.filter(
+            function(entry) {
+                return launch_success == entry.launch_success.toString();
+            }))
+
+    } else if (global_search['landing'] != '') {
+        renderResults(serverData.filter(
+            function(entry) {
+                return landing_success == entry.rocket.first_stage.cores[0].land_success;
             }))
 
     } else if (global_search['year'] != '') {
         renderResults(serverData.filter(
             function(entry) {
-                return launch_year == (entry.launch_year).toString() || launch_success == entry.launch_success;
+                return launch_year == (entry.launch_year).toString();
             }))
 
     } else {
         renderResults(serverData);
 
     }
-
-
-
 }
 
 function readStoredURLParams() {
