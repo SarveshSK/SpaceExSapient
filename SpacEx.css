@@ -158,3 +158,9 @@ img {
     flex-direction: column;
     overflow: hidden;
 }
+
+@media only screen and (max-width: 600px) {
+    .cards {
+        max-width: 100px!important;
+    }
+}
