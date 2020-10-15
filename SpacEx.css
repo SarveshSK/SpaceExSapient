@@ -161,7 +161,17 @@ img {
 
 @media only screen and (max-width: 600px) {
     .cards {
-        max-width: 100px;
+        max-width: 100%;
         clear: both;
+    }
+    #left-section {
+        width: 100%;
+    }
+    #last-button {
+        text-align: center;
+        margin-right: 100px;
+    }
+    .cards_item {
+        padding: 3rem;
     }
 }
